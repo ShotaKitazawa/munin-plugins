@@ -46,7 +46,6 @@ for STATE in $(ipvsadm -l | egrep "([0-9]{1,3}\.){3}[0-9]{1,3}:[0-9]{1,5}"); do
             echo_config $i 
         done
     fi
-
 done
 
 if [ "$(basename $0)" = "ipvsadm_active" ]; then 
@@ -55,7 +54,6 @@ if [ "$(basename $0)" = "ipvsadm_active" ]; then
         echo "sum.draw STACK"
         echo "sum.colour ccff00"
         echo "sum.info Sum of the active connection."
-
   else
     echo "sum.value $COUNT"
   fi
