@@ -1,0 +1,21 @@
+#!/bin/bash
+# Author: Shota Kitazawa
+
+COUNT=0
+
+IFS='
+'
+for STATE in $(ipvsadm -l | egrep "([0-9]{1,3}\.){3}[0-9]{1,3}:[0-9]{1,5}"); do
+    OWN_NAME=$0
+    OPTION=$1
+    ADDRESSPORT=$(echo $STATE | awk '{print $2}')
+    WEIGHT=$(echo $STATE | awk '{print $4}')
+
+    if [ "$OPTION" =  "config" ]; then
+        echo "$ADDRESSPORT.label $ADDRESSPORT"
+        echo "$ADDRESSPORT.draw LINE"
+        echo "$ADDRESSPORT.info The weight of $1."
+    else
+        echo $ADDRESSPORT.value $WEIGHT
+    fi
+done
