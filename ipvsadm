@@ -48,7 +48,7 @@ fi
 
 IFS='
 '
-for STATE in $(ipvsadm -l | egrep "([0-9]{1,3}\.){3}[0-9]{1,3}:[0-9]{1,5}"); do
+for STATE in $(ipvsadm -l | egrep -- "->" | tail -n+2); do
   ADDRESSPORT=$(echo $STATE | awk '{print $2}')
   WEIGHT=$(echo $STATE | awk '{print $4}')
   ACTIVE=$(echo $STATE | awk '{print $5}')
