@@ -24,7 +24,6 @@ function echo_config() {
 }
 
 
-
 if [ "$OPTION" = "config" ]; then
   case $(basename $OWN_NAME) in
     ipvsadm_active)
@@ -49,14 +48,19 @@ fi
 IFS='
 '
 for STATE in $(ipvsadm -l | egrep -- "->" | tail -n+2); do
-  ADDRESSPORT=$(echo $STATE | awk '{print $2}')
+  ADDRESS=$(echo $STATE | awk '{print $2}')
+  if [[ $ADDRESS =~ ^[0-9] ]]; then
+    ADDRESS=$(echo $ADDRESS | sed 's/\./-/g')
+  else
+    ADDRESS=$(echo $ADDRESS | awk -F "." '{print $1}')
+  fi
   WEIGHT=$(echo $STATE | awk '{print $4}')
   ACTIVE=$(echo $STATE | awk '{print $5}')
 
   if [ "$OPTION" =  "config" ]; then
-    echo_config $ADDRESSPORT
+    echo_config $ADDRESS
   else
-    echo_metric $ADDRESSPORT
+    echo_metric $ADDRESS
   fi
 done
 
